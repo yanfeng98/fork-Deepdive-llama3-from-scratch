@@ -1,28 +1,18 @@
-<center>
+<p align="center">
     <img src="images/logo.png" width="600px"/>
-</center>
+</p>
 
-<center style="font-size: 2em; font-weight: bold;">Deepdive-llama3-from-scratch</center>
+<h1 align="center">Deepdive-llama3-from-scratch</h1>
 
-<br>
-
-<div style="text-align: center; display: flex; justify-content: center; gap: 10px;">
-    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/therealoliver/Deepdive-llama3-from-scratch" alt="License">
-    </a>
-    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/stargazers">
-        <img src="https://img.shields.io/github/stars/therealoliver/Deepdive-llama3-from-scratch" alt="GitHub stars">
-    </a>
-    <a href="#from_me">
-        <img src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-ff69b4" alt="Buy me a coffee">
-    </a>
-</div>
-
-<br>
+<p align="center">
+    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/LICENSE"><img src="https://img.shields.io/github/license/therealoliver/Deepdive-llama3-from-scratch" alt="License"></a>
+    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/stargazers"><img src="https://img.shields.io/github/stars/therealoliver/Deepdive-llama3-from-scratch" alt="GitHub stars"></a>
+    <a href="#from_me"><img src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-ff69b4" alt="Buy me a coffee"></a>
+</p>
 
 <h3 align="center">
     <p>
-        <b>[ View in English | <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/README_zh.md">中文版文档点这里</a> ]</b>
+        <b>[ View in English | <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/README_zh.md">中文版文档点这里</a> ]</b>
     </p>
 </h3>
 
@@ -30,9 +20,9 @@
 
 This project is an enhanced version based on [naklecha/llama3-from-scratch](https://github.com/naklecha/llama3-from-scratch). It has been comprehensively improved and optimized on the basis of the original project, aiming to help everyone more easily understand and master the implementation principle and the detailed reasoning process of the Llama3 model. Thanks to the contributions of the original author :)
 <br><br>
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 The following are the core improvements of this project:
-</span>
+</h3>
 
 
 1. **Structural Optimization**  
@@ -45,7 +35,7 @@ The following are the core improvements of this project:
    The changes in the matrix dimensions in each step of the calculation are fully annotated, making it easier for you to understand the entire process.
    
 4. **Principle Explanation**  
-   Abundant principle - related explanations and a large number of detailed derivations have been added. It not only tells you "what to do" but also deeply explains "why to do it", helping you fundamentally master the design concept of the model.
+   Abundant principle-related explanations and a large number of detailed derivations have been added. It not only tells you "what to do" but also deeply explains "why to do it", helping you fundamentally master the design concept of the model.
    
 5. **KV-Cache Insights**  
    An additional derivation chapter on KV-Cache has been added, covering detailed core concepts, principle derivations, and the application process in the attention mechanism, allowing you to understand every detail and philosophy of KV-Cache from its roots. 
@@ -56,7 +46,7 @@ The following are the core improvements of this project:
 
 ---
 
-<center style="font-size: 2em; font-weight: bold;">Table of Contents</center>
+<h2 align="center">Table of Contents</h2>
 
 - [Loading the model](#loading-the-model)
   - [Loading the tokenizer](#loading-the-tokenizer)
@@ -107,10 +97,10 @@ The following are the core improvements of this project:
 
 ---
 
-<span style="font-size: 1.5em; font-weight: bold;">
+<h3>
 Now, let's start the formal learning process!
-</span>
-<br><br>
+</h3>
+<br>
 
 In this file, I implemented Llama3 from scratch, one tensor and matrix multiplication at a time.
 <br>
@@ -119,14 +109,14 @@ Also, I'm going to load tensors directly from the model file that meta provided 
 Note: This project uses the original model files, that is, the models in the "original" folder of the downloaded model files.
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">
+<h3>
     Please Note! There is a small mistake in the figure:<br>
-    <span style="font-size: 0.9em; font-weight: normal;">
+    <h4>
         In each Transformer block, the input of the second "add" operation should be the output of the feed-forward layer and the output of the first "add" operation, instead of the result after normalization.
         <br>
         If we consider multi-head self-attention and feed-forward as the same type of operations (both for feature transformation), then the forms and processes of the two "normalization - feature transformation - residual connection (add)" are exactly the same.
-    </span>
-</span>
+    </h4>
+</h3>
 
 <div>
     <img src="images/archi.png"/>
@@ -145,7 +135,7 @@ link to his implementation: https://github.com/karpathy/minbpe
 </div>
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">Summary of the steps to load the BPE-based tokenizer:</span>
+<h3>Summary of the steps to load the BPE-based tokenizer:</h3>
 
 1. Loading regular words: Load the local tokenizer model dictionary (which only contains regular subwords and no special tokens).
 2. Definition of the special words: Manually define special tokens (using ready-made ones or modifying based on the ready-made ones).
@@ -321,9 +311,9 @@ config
 
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 Based on the configuration details, the internal calculation process of attention given an input can be inferred as follows:
-</span>
+</h3>
 
 <pre>
 input(L, 4096) -> query_proj(L, 128, 32)
@@ -505,9 +495,9 @@ In the calculation of multi-head attention on each layer, 32 heads are involved.
 </div>
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 The core calculation of the attention mechanism is the calculation formula shown in the following figure.
-</span>
+</h3>
 
 1. We need to obtain the query, key, and value vectors by performing a linear mapping on the input embeddings.
 2. Subsequently, based on the QK vectors, we obtain the attention weights between tokens, that is, for each token, the scores of the importance or relevance of other tokens to it.
@@ -746,9 +736,9 @@ RoPE is usually applied to the query and key vectors in the self-attention mecha
 </div>
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 The specific calculation process of RoPE is as follows:
-</span>
+</h3>
 
 1. Divide the dimensions of each vector into pairs (because the derivation of high-dimensional rotation matrices is complex, and excessively high dimensions will significantly increase the computational complexity, while the formulas for two-dimensional rotation are relatively mature and simple, making them easy to calculate).
 2. For each pair, obtain $\Large \theta=\frac{1}{rope\_theta^{i/D}}$, where $i$ is the $i$-th pair and $D$ is the total number of pairs. That is, the positional information of the current dimension pair within the vector.
@@ -761,9 +751,9 @@ The specific calculation process of RoPE is as follows:
 </div>
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 In the actual code implementation, to simplify the calculation process, the above-mentioned calculation based on the rotation matrix (Step 4) will be converted into a calculation in the complex number domain. The principle is as follows:
-</span>
+</h3>
 
 1. The rectangular coordinates $(x, y)$ can be regarded as the coordinate representation of the complex number $\large x + yi$ on the complex plane.
 2. The polar form of a complex number can be expressed as $\large re^{i\theta}$, where $r$ is the modulus and $\theta$ is the angle.
@@ -794,9 +784,9 @@ q_per_token_split_into_pairs.shape
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 Start to obtain the complex-domain representation of the rotation matrix.
-</span>
+</h3>
 
 <div>
     <img src="images/freq_cis.png" width="600"/>
@@ -903,9 +893,9 @@ Note: As shown in the figures, tokens in later positions have larger rotation an
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 Now we have provided a complex number (an angle-changing vector) for each dimension pair of the query vector corresponding to each token.
-</span>
+</h3>
 <br><br>
 Now we can convert our query (the one divided into pairs) into complex numbers and then rotate these queries through dot-product calculation. :)
 
@@ -939,10 +929,10 @@ q_per_token_as_complex_numbers_rotated.shape
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 Obtain the rotated vectors (restore the shape).
-</span>
-<br><br>
+</h3>
+<br>
 We can represent the complex numbers as real numbers again to obtain the query results in the form of dimension pairs.
 
 
@@ -1036,9 +1026,9 @@ k_per_token_rotated.shape
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 At this stage, we have the rotated query vectors and key vectors corresponding to each token.
-</span>
+</h3>
 
 <div>
     <img src="images/keys0.png" width="600px"/>
@@ -1245,9 +1235,9 @@ We now have the attention values for the first head of the first layer.
 Now we need to run a loop to perform exactly the same mathematical process as in the previous cell, but for each head in the first layer.
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 It's worth noting that in the <a href="https://github.com/meta-llama/llama3/blob/main/llama/model.py#L90">official Llama3 code implementation</a>, the multi-head attention calculation adopts the method of one-time matrix multiplication instead of time consuming for-loop calculations. The general process is as follows:
-</span>
+</h3>
 
 1. Based on matrix parallelism, calculate the QKV vectors: [17x4096] x [4096x4096] or [4096x1024] = [17x4096] or [17x1024], and then reshape them to [32x17x128] or [8x17x128].
 2. After obtaining the QKV vectors, duplicate the internal parts of the K and V vectors to make their shapes consistent with the Q vector. At this time, the shapes of all of them are [32x17x128].
@@ -1429,7 +1419,7 @@ In Llama3, they used the SwiGLU feed-forward network. This network architecture 
 Nowadays, this kind of feed-forward network architecture is very common in large language models.
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">Why Introduce Nonlinear Layers:</span>
+<h3>Why Introduce Nonlinear Layers:</h3>
 <br>
 
 - The Nonlinearity is at the core of why neural network models can be considered "universal function approximators". In traditional neural network models, we use nonlinear activation functions (such as sigmoid, ReLU, etc.) to increase the model's expressive power, enabling it to fit the complex patterns hidden in the training data.
@@ -1437,14 +1427,14 @@ Nowadays, this kind of feed-forward network architecture is very common in large
 - So, it is necessary to add an FFN network after the self-attention layer to introduce nonlinear transformation capabilities to the model, thus improving the model's ability to model complex semantic relationships.
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">Generally, introducing nonlinear layers can play the following roles:</span>
+<h3>Generally, introducing nonlinear layers can play the following roles:</h3>
 
 1. Add nonlinear capabilities to the model to facilitate the model's learning and training.
 2. Enhance the model's information abstraction ability, enabling the model to represent data features and patterns at different levels during the layer-by-layer learning process. For example, the lower-layer networks can identify basic language structures (such as part-of-speech), while the higher-layer networks can understand more complex semantic information (such as sentiment, intention).
 3. In addition, a current view holds that the attention layer is mainly used for input context interaction, while the FFN layer is where the LLMs mainly stores and remembers general knowledge during training (given to its nonlinear representation ability), so that it can find answers to input questions from general knowledge.
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">SwiGLU Network Structure:</span>
+<h3>SwiGLU Network Structure:</h3>
 
 1. Perform a linear transformation on the input: $X^\prime = XW_3$
 2. Gating unit: $GATE = Activation\_Function(XW_1)$, which is used to selectively pass information. That is, assuming that the information in $X^\prime$ has different importance, so the information should be weighted and passed based on the score of the gating unit, thus improving the expressive ability of the model.
@@ -1454,7 +1444,7 @@ Nowadays, this kind of feed-forward network architecture is very common in large
 6. Perform a linear transformation again: $Y = X^\prime W_2$
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">Calculation of the Dimension Size of the Hidden Layer in the Feed-Forward Layer (Based on the Official Implementation Process of Llama3):</span>
+<h3>Calculation of the Dimension Size of the Hidden Layer in the Feed-Forward Layer (Based on the Official Implementation Process of Llama3):</h3>
 
 1. Input dimension is dim = 4096
 2. hidden_dim = 4 * dim = 16384  # First, magnify it by four times. When initializing the feed-forward layer in the Transformer block, the input hidden_dim is multiplied by four.
@@ -1499,10 +1489,10 @@ layer_0_embedding.shape
 
 
 
-<span style="font-size: 1.5em; font-weight: normal;">
+<h3>
 Finally, we have the new embeddings of each token after passing through the first layer.
-</span>
-<br><br>
+</h3>
+<br>
 There are only 31 layers left to complete (just one for loop away).
 <br>
 You can imagine that this processed embedding contains all the information of the tokens proposed in the first layer.
@@ -1819,7 +1809,7 @@ Predict results based on 17th token: ['42', '6', '4', '41', '1', '2', '3', '7', 
 # Need to predict multiple tokens? Just using KV-Cache! (It really took me a lot of effort to sort this out. Orz)
 
 
-<span style="font-size: 1.5em; font-weight: bold;">How to Continuously Predict Multiple Tokens</span>
+<h3>How to Continuously Predict Multiple Tokens</h3>
 
 Now, we've completed the prediction of the next word for the input text. But what if our expected output requires multiple tokens?
 <br>
@@ -1836,19 +1826,19 @@ That's why there are well-known caching mechanisms like KV-Cache. By caching the
 Thanks to the caching mechanism, when we use a large model for inference, you may notice that waiting for the first token to be output is often the most time-consuming. But once the first token is output, the output speed of subsequent tokens will increase significantly.
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">Advantages and Disadvantages of KV-Cache</span>
+<h3>Advantages and Disadvantages of KV-Cache</h3>
 
 **Advantage**: When continuously predicting, we only need to input the new token each time instead of the entire text sequence. This greatly improves the calculation speed during inference.
 <br>
 **Disadvantage**: Due to the caching mechanism, it will consume more memory resources during inference.
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">Principle Derivation of KV-Cache</span>
+<h3>Principle Derivation of KV-Cache</h3>
 
 KV-Cache comes from the observation and analysis of the above matrix calculation process. By analyzing the calculation process of each input token, we can find that in most calculation steps, the calculation of each token is actually relatively independent and rately involves interaction with other tokens. Only when calculating the attention mechanism will token-to-token interactions be involved, thus requiring the caching of historical KV vectors.
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">Here is the specific derivation logic of KV-Cache:</span>
+<h3>Here is the specific derivation logic of KV-Cache:</h3>
 1. **Premise**: To predict the next token, we only need to get the output result of the last token (just as we did in the prediction chapter).
 2. **Non-attention parts only needs to calculate the new tokens**: Except for the attention calculation, the calculations of all other parts are independent among tokens. So we only need to calculate the new tokens and don't need to input historical tokens (I'll expand the analysis below).
 3. **Attention parts also only needs to calculate the new tokens**: In the attention layer, due to the masking mechanism, the output results of historical tokens won't be affected by future new tokens. So their inputs and outputs at each layer are fixed, that is, the QKV vectors of historical tokens will not change because of the addition of new tokens. Thus, we only need to calculate the attention of the new tokens.
@@ -1858,7 +1848,7 @@ KV-Cache comes from the observation and analysis of the above matrix calculation
 7. **Efficiency of KV-Cache**: As known from point 3, the historical KV vectors won't change. So they can be incrementally updated during the continuous prediction process without modifying the historical content. In this way, each time we predict, we only need to input and calculate the result of the newly added tokens instead of taking the complete sequence as input, thus greatly improving the inference efficiency.
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">Additional: Analysis of the Independence of Token Calculation in KV-Cache</span>
+<h3>Additional: Analysis of the Independence of Token Calculation in KV-Cache</h3>
 
 **All components except the attention layer (no interaction among them)**:
 1. **Two times normalizations**: Each token vector is normalized in its own feature dimension without using other tokens.
@@ -1872,7 +1862,7 @@ KV-Cache comes from the observation and analysis of the above matrix calculation
 4. **Calculate the result of the attention mechanism**: The attention mechanism calculates the weighted sum of value vectors based on attention weights. So, similar to the conclusion in the previous point, the results of historical tokens are also independent of new tokens. And new tokens need the value vector cache of historical tokens.
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">Attention Calculation Process Based on KV-Cache</span>
+<h3>Attention Calculation Process Based on KV-Cache</h3>
 
 To clearly show the calculation process, we only derive the single-head scenario (the principle and process of extending it to the multi-head scenario are exactly the same as the previous multi-head attention implementation):
 1. Assume that the historical input tokens are $S_1$ with a length of N. Based on KV-Cache, we will store the KV result matrix of each head. The shape of a single head is [Nxhead_dim] = [Nx128].
