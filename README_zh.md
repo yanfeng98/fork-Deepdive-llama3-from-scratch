@@ -1,37 +1,27 @@
-<center>
+<p align="center">
     <img src="images/logo.png" width="600px"/>
-</center>
+</p>
 
-<center style="font-size: 2em; font-weight: bold;">深入挖掘llama3的从零实现</center>
+<h1 align="center">深入挖掘llama3的从零实现</h1>
 
-<br>
-
-<div style="text-align: center; display: flex; justify-content: center; gap: 10px;">
-    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/therealoliver/Deepdive-llama3-from-scratch" alt="License">
-    </a>
-    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/stargazers">
-        <img src="https://img.shields.io/github/stars/therealoliver/Deepdive-llama3-from-scratch" alt="GitHub stars">
-    </a>
-    <a href="#from_me">
-        <img src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-ff69b4" alt="Buy me a coffee">
-    </a>
-</div>
-
-<br>
+<p align="center">
+    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/LICENSE"><img src="https://img.shields.io/github/license/therealoliver/Deepdive-llama3-from-scratch" alt="License"></a>
+    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/stargazers"><img src="https://img.shields.io/github/stars/therealoliver/Deepdive-llama3-from-scratch" alt="GitHub stars"></a>
+    <a href="#from_me"><img src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-ff69b4" alt="Buy me a coffee"></a>
+</p>
 
 <h3 align="center">
     <p>
-        <b>[ <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/README.md">View in English</a> | 中文版文档点这里 ]</b>
+        <b>[ <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/README.md">View in English</a> | 中文版文档点这里 ]</b>
     </p>
 </h3>
 
 ---
 
-<br>
 本项目是基于 [naklecha/llama3-from-scratch](https://github.com/naklecha/llama3-from-scratch) 的增强版本。在原项目的基础上进行了全面的改进和优化，旨在帮助大家更轻松地理解和掌握llama3模型的实现原理以及详细的推理流程，感谢原作者的贡献 :)
 <br><br>
-<span style="font-size: 1.2em; font-weight: bold;">以下是本项目的核心改进点：</span>
+<h3>以下是本项目的核心改进点：</h3>
+
 
 1. **结构优化**  
    重新编排了内容顺序，调整了目录结构，使学习过程更加清晰合理，便于大家循序渐进地理解代码。
@@ -54,7 +44,7 @@
 
 ---
 
-<center style="font-size: 2em; font-weight: bold;">目 录</center>
+<h2 align="center">目 录</h2>
 
 - [加载模型](#加载模型)
   - [加载分词器tokenizer](#加载分词器tokenizer)
@@ -103,14 +93,12 @@
   - [From前身项目作者](#from前身项目作者)
 - [LICENSE](#license)
 
-<br>
-
 ---
 
-<span style="font-size: 1.5em; font-weight: bold;">
+<h3>
 下面让我们开始正式的学习过程！
-</span>
-<br><br>
+</h3>
+<br>
 
 在这个文件中，我从头开始实现了llama3，一次一个张量和矩阵乘法。
 <br>
@@ -120,14 +108,14 @@
 注：本项目使用的是原始模型文件，即下载的模型文件中的"original"文件夹下的模型
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">
+<h3>
     请注意！图中有个小错误：<br>
-    <span style="font-size: 0.9em; font-weight: normal;">
+    <h4>
         在每个transformer块中，第二次的add的输入应该为feed-forward的输出以及第一次add的输出，而非normalization后的结果。
         <br>
         如果把multi-head self-attention和feed-forward看作是相同的操作（均为特征变换），则两次的 归一化(normalization)-特征变换-残差连接(add) 的形式和过程是一模一样的
-    </span>
-</span>
+    </h4>
+</h3>
 
 <div>
     <img src="images/archi.png"/>
@@ -145,9 +133,9 @@
 </div>
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 加载基于BPE的tokenizer的步骤总结：
-</span>
+</h3>
 
 1. 常规词字典加载：加载本地tokenizer模型字典（只包含常规子词，无特殊token）
 2. 特殊词字典定义：手动定义特殊tokens（用现成的或基于现成的进行修改）
@@ -317,9 +305,9 @@ config
 
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 基于上述配置细节，可推断出给定一个输入，attention内部的计算流程为：
-</span>
+</h3>
     
 <pre>
 input(L, 4096) -> query_proj(L, 128, 32)
@@ -501,9 +489,9 @@ model["layers.0.attention_norm.weight"].shape, token_embeddings.shape
 </div>
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 注意力机制的核心即下图中的计算公式
-</span>
+</h3>
 
 1. 我们需要通过对输入的嵌入向量进行线性映射来获取query，key和value向量
 2. 随后，基于QK向量得到token间的注意力权重，即对于每个token来说，其它token对它的重要性或相关性的打分
@@ -742,14 +730,14 @@ RoPE通常应用于自注意力机制中的query和key向量。在计算注意�
 </div>
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 具体的RoPE计算过程如下：
-</span>
+</h3>
     
 1. 将每个向量的维度两两分割，作为一对（因为高维旋转矩阵推导复杂，且过高的维度会显著增加计算复杂度，而二维旋转的公式比较成熟且简单，易于计算）
-2. 对于每一对，得到 $\Large \theta=\frac{1}{rope\_theta^{i/D}}$，其中i为第i对，D为总的对数。即当前维度对在该向量内的位置信息
-3. 对于每个向量，得到 $\Large m$，表示该向量对应的是第m个token。即当前向量在整个向量列表内的位置信息
-4. 对于每一对，$\large res=\begin{pmatrix} \cos m\theta & -\sin m\theta \\ \sin m\theta & \cos m\theta \\ \end{pmatrix} \begin{pmatrix} x^0_i \\ x^1_i \\ \end{pmatrix}$，其中res即该向量对在复空间中旋转$m\theta$度后的结果
+2. 对于每一对，得到 $\Large \theta=\frac{1}{rope\\_theta^{i/D}}$ ，其中i为第i对，D为总的对数。即当前维度对在该向量内的位置信息
+3. 对于每个向量，得到 $\Large m$ ，表示该向量对应的是第m个token。即当前向量在整个向量列表内的位置信息
+4. 对于每一对， $\large res=\begin{pmatrix} \cos m\theta & -\sin m\theta \\ \sin m\theta & \cos m\theta \\ \end{pmatrix} \begin{pmatrix} x^0_i \\ x^1_i \\ \end{pmatrix}$ ，其中res即该向量对在复空间中旋转 $m\theta$ 度后的结果
 5. 对所有向量的所有维度对做上述计算，即可得到最终的RoPE位置嵌入结果
 
 <div>
@@ -757,15 +745,15 @@ RoPE通常应用于自注意力机制中的query和key向量。在计算注意�
 </div>
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 而在实际的代码实现中，为了简化计算过程，会将上述基于旋转矩阵的计算（第4步）转换为复数域计算，原理如下：
-</span>
+</h3>
 
 1. 直角坐标(x, y)可看做是复数 $\large x+yi$ 在复平面上的坐标表示
-2. 复数的极坐标形式可表示为 $\large re^{i\theta}$，其中r为模长，θ为角度
-3. 极坐标下的乘法计算 $\large r_1e^{i\theta_1} \times r_2e^{i\theta_2} = r_1r_2e^{i(\theta_1 + \theta_2)}$ 可看做是坐标1的长度增加$r_2$倍，角度旋转$\theta_2$度
-4. 因此，如果想将坐标旋转mθ度，则可以定义一个模长为1，角度为mθ的旋转因子 $\large e^{im\theta}$，将它与坐标相乘即可等价于基于旋转矩阵的旋转方法
-5. 此外，根据欧拉公式可得 $\large re^{i\theta} = r\cos\theta + r\sin{\theta i} = x + yi$，$\large e^{im\theta} = \cos{m\theta} + \sin{m\theta i}$
+2. 复数的极坐标形式可表示为 $\large re^{i\theta}$ ，其中r为模长，θ为角度
+3. 极坐标下的乘法计算 $\large r_1e^{i\theta_1} \times r_2e^{i\theta_2} = r_1r_2e^{i(\theta_1 + \theta_2)}$ 可看做是坐标1的长度增加 $r_2$ 倍，角度旋转 $\theta_2$ 度
+4. 因此，如果想将坐标旋转mθ度，则可以定义一个模长为1，角度为mθ的旋转因子 $\large e^{im\theta}$ ，将它与坐标相乘即可等价于基于旋转矩阵的旋转方法
+5. 此外，根据欧拉公式可得 $\large re^{i\theta} = r\cos\theta + r\sin{\theta i} = x + yi$ ， $\large e^{im\theta} = \cos{m\theta} + \sin{m\theta i}$
 6. 因此，一个二维坐标(x, y)旋转mθ度就可通过 $\large re^{i\theta^\prime} \times e^{im\theta} = (x + yi) \times (\cos{m\theta} + \sin{m\theta i})$ 得到（两个复数的乘积）
 
 ---
@@ -774,7 +762,7 @@ RoPE通常应用于自注意力机制中的query和key向量。在计算注意�
 
 在下面步骤中，我们首先将query向量进行按对分割，随后会对每一对进行角度旋转，正如上述步骤所示
 <br><br>
-我们现在有了一个形状为[17x64x2]的向量，这是把prompt中的每个token对应的128维query向量分割成了64对，每一对都将旋转$m\theta$度
+我们现在有了一个形状为[17x64x2]的向量，这是把prompt中的每个token对应的128维query向量分割成了64对，每一对都将旋转 $m\theta$ 度
 
 
 ```python
@@ -791,9 +779,9 @@ q_per_token_split_into_pairs.shape
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 开始得到旋转矩阵的复数域表示
-</span>
+</h3>
 
 <div>
     <img src="images/freq_cis.png" width="600"/>
@@ -896,10 +884,10 @@ plt.show()
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 现在我们为每个token对应的query向量元素都提供了一个复数（角度变化向量）
-</span>
-<br><br>
+</h3>
+<br>
 我们现在可以把我们的query（划分成对的那个）转换成复数，然后通过点积计算来旋转这些query :)
 
 
@@ -932,10 +920,10 @@ q_per_token_as_complex_numbers_rotated.shape
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 获得旋转后的向量（形状复原）
-</span>
-<br><br>
+</h3>
+<br>
 我们可以再次将复数表示为实数，从而获得维度对形式的query结果
 
 
@@ -1028,9 +1016,9 @@ k_per_token_rotated.shape
 
 
 
-<span style="font-size: 1.2em; font-weight: normal;">
+<h3>
 到了这个阶段，我们就有了每个token对应的旋转后的query向量和key向量了~
-</span>
+</h3>
 
 <div>
     <img src="images/keys0.png" width="600px"/>
@@ -1231,15 +1219,14 @@ qkv_attention.shape
 现在我们要运行一个循环，来执行和之前单元格完全相同的数学过程，但是会计算第一层中的每个头
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">
+<h3>
 值得注意的是，在<a href="https://github.com/meta-llama/llama3/blob/main/llama/model.py#L90">官方的llama3代码实现</a>中，多头注意力计算采取了一次性矩阵乘法的方式，而非费时的for循环计算，大致过程如下：
-</span>
+</h3>
 
 1. 基于矩阵并行，计算qkv向量，[17x4096] x [4096x4096] or [4096x1024] = [17x4096] or [17x1024]，再将形状转换为[32x17x128] or [8x17x128]
 2. 得到qkv向量后，将kv内部进行复制，从而与q向量形状保持一致，此时形状均为[32x17x128]
 3. 计算分数时，采用transpose方法将张量的最后两维位置交换从而完成矩阵乘法，如 `torch.matmul(q, k.transpose(1,2)) / head_dim ** 0.5`，此时为[32x17x128] x [32x128x17] = [32x17x17]
 4. 其他的矩阵计算同理
-<br>
 
 注：上述过程中每一步的矩阵形状变化为简化版，仅供示意以便于理解，与llama3官方实现的变化过程不同（官方实现中会涉及大量的形状变化过程）
 
@@ -1415,31 +1402,28 @@ embedding_after_edit_normalized.shape
 如今，这种前馈网络架构在大模型中很常用
 <br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">为什么要引入非线性层：</span>
+<h3>为什么要引入非线性层：</h3>
 
 - 非线性特性是神经网络模型能成为“万能函数逼近器”的核心。在传统神经网络模型中，我们要使用非线性的激活函数（如sigmoid，ReLU等）来增加模型的表达能力，使其能够拟合训练数据中隐含的复杂模式。
 - 而在transformer中，由于注意力机制本质上是对value向量的线性加权求和（尽管权重是经由softmax函数的非线性计算得到的，但对value来说依旧只是线性加权），因此它虽然能够捕捉全局依赖，但其输出仍只是输入的线性组合，此时的transformer模型是缺乏非线性能力的。
 - 因此，需要在自注意力层后添加FFN网络，给模型引入非线性变换能力，从而提升模型能够对复杂语义关系进行建模的能力。
-<br>
 
-<span style="font-size: 1.2em; font-weight: bold;">大致来说，引入非线性层可以起到如下作用：</span>
+<h3>大致来说，引入非线性层可以起到如下作用：</h3>
 
 1. 给模型增加非线性能力以便于模型的学习训练
 2. 增加模型的信息抽象能力，使模型在逐层的学习过程中，能够表征不同层面的数据特征和模式，比如低层网络识别基础的语言结构（如词性），而在高层则能够理解更为复杂的语义信息（如情感、意图）
 3. 此外，目前的一种观点认为，注意力层主要用于输入上下文的交互，而FFN层才是大模型中主要记忆存储训练时的通用知识的地方（得益于其非线性表征能力），从而能够从通用知识中找到输入问题的答案
-<br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">SwiGLU网络结构：</span>
+<h3>SwiGLU网络结构：</h3>
 
-1. 将输入进行线性变换：$X^\prime = XW_3$
-2. 门控单元：$GATE = Activation\_Function(XW_1)$，用于有选择的通过信息，即假定 $X^\prime$ 中的信息重要性不同，从而通过门控单元的分数对信息进行加权通过，进而提升模型的表达能力
-3. 其中的激活函数为一种Swish激活函数（因此网络称为SwiGLU，即Swish激活函数和GLU门控线性单元的结合），公式为：$Swish = X \cdot \sigma(\beta X)$，其中 $\sigma$ 为sigmoid激活函数，在SwiGLU中，$\beta$为1（在原始公式里是一个可学习参数）
-4. 因此，门控单元的具体计算为：$GATE = XW_1 \cdot \sigma(XW_1)$，在pytorch中，该激活函数为silu，即 $GATE = silu(XW_1)$
-5. 门控机制应用：$X^\prime = X^\prime \cdot GATE$
-6. 再次进行线性变换：$Y = X^\prime W_2$
-<br><br>
+1. 将输入进行线性变换： $X^\prime = XW_3$
+2. 门控单元： $GATE = Activation\\_Function(XW_1)$ ，用于有选择的通过信息，即假定 $X^\prime$ 中的信息重要性不同，从而通过门控单元的分数对信息进行加权通过，进而提升模型的表达能力
+3. 其中的激活函数为一种Swish激活函数（因此网络称为SwiGLU，即Swish激活函数和GLU门控线性单元的结合），公式为： $Swish = X \cdot \sigma(\beta X)$ ，其中 $\sigma$ 为sigmoid激活函数，在SwiGLU中， $\beta$ 为1（在原始公式里是一个可学习参数）
+4. 因此，门控单元的具体计算为： $GATE = XW_1 \cdot \sigma(XW_1)$ ，在pytorch中，该激活函数为silu，即 $GATE = silu(XW_1)$
+5. 门控机制应用： $X^\prime = X^\prime \cdot GATE$
+6. 再次进行线性变换： $Y = X^\prime W_2$
 
-<span style="font-size: 1.5em; font-weight: bold;">前馈层隐藏层维度大小的来源计算（基于llama3官方实现过程）：</span>
+<h3>前馈层隐藏层维度大小的来源计算（基于llama3官方实现过程）：</h3>
 
 1. 输入维度dim = 4096
 2. hidden_dim = 4 * dim = 16384  # 首先放大四倍，在transformer块中初始化前馈层时，输入hidden_dim时乘了四倍
@@ -1484,10 +1468,10 @@ layer_0_embedding.shape
 
 
 
-<span style="font-size: 1.5em; font-weight: normal;">
+<h3>
 我们终于有了每个token在经过第一层之后的新的嵌入向量
-</span>
-<br><br>
+</h3>
+<br>
 距离完成只剩31层了（只差一个for循环）
 <br>
 你可以设想，这个经过处理后的嵌入向量包含了在第一层中所提出的所有token的信息
@@ -1801,7 +1785,7 @@ _="""
 # 需要预测多个token？使用KV-Cache吧（梳理清楚这个真的花费了我好大的精力 Orz）
 
 
-<span style="font-size: 1.5em; font-weight: bold;">如何连续预测多个token</span>
+<h3>如何连续预测多个token</h3>
 
 现在，我们完成了针对输入文本的下一个词的预测，但是，如果我们预期的输出需要多个token呢？
 <br>
@@ -1818,19 +1802,20 @@ _="""
 得益于缓存机制，当我们使用大模型进行推理时，你可能会发现往往在等待第一个token输出时是最漫长的，而一旦输出了第一个token，后续token的输出速度将大大提高。
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">KV-Cache的优劣势</span>
+<h3>KV-Cache的优劣势</h3>
 
 **优势**：持续预测时，每次只需要输入新的token即可，无需将完整的文本序列全部输入进来，从而极大提升推理时计算速度
 <br>
 **劣势**：由于缓存机制的存在，在推理时会额外占用较多的内存资源
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">KV-Cache的原理推导</span>
+<h3>KV-Cache的原理推导</h3>
 
 KV-Cache来自于对上述矩阵计算过程的观察和分析，通过分析每个输入token在其中的计算过程，我们可以发现在大多数的计算步骤中，每个token的计算其实都是相对独立的，很少涉及到与其他token的交互，而只有计算注意力机制时会涉及到token间的交互，因此会需要历史KV向量的缓存。
 <br>
 
-<span style="font-size: 1.2em; font-weight: bold;">以下是KV-Cache的具体推导逻辑：</span>
+<h3>以下是KV-Cache的具体推导逻辑：</h3>
+
 1. **前提**：预测下一词只需要得到最后一个token的输出结果（正如我们在预测章节所做的一样）
 2. **非注意力部分只需计算新token**：除了注意力计算以外，所有部分的计算都是token间相互独立的，因此只需要计算新token即可，可以不用输入历史token（我将在下面进行展开分析）
 3. **注意力部分也只需计算新token**：注意力层中，由于屏蔽机制的存在，历史token的输出结果不会受未来新token的影响，因此其在每一层的输入和输出都是固定不变的，即历史token的QKV向量都不会因为加入新token而改变，从而只需要计算新token的注意力即可
@@ -1838,9 +1823,8 @@ KV-Cache来自于对上述矩阵计算过程的观察和分析，通过分析每
 5. **新token注意力权重计算**：由第4条可知，我们还需要先获取新token与历史token间的重要性信息，即权重，所以需要计算新token与所有token的key向量乘积，因此需要存储历史token的key
 6. **KV-Cache的获取**：由第4,5条可知，我们需要存储历史token的KV向量，而query向量因为没有用到，所以不用存储，这就是KV-Cache的由来
 7. **KV-Cache的高效性**：由第3条可知，历史KV向量是不会变化的，因此可以在持续预测过程中不断的增量更新，而无需修改历史内容。这样，每次预测时只需要输入并计算新增token的结果，而无需将完整序列作为输入，从而大幅提升推理效率
-<br><br>
 
-<span style="font-size: 1.2em; font-weight: bold;">注：KV-Cache中token计算的独立性分析</span>
+<h3>注：KV-Cache中token计算的独立性分析</h3>
 
 **除注意力层以外的所有组件（均无交互）**：
 1. **两次归一化(normalization)**：每个token向量都是在自己的特征维度上进行归一化计算，不会用到其它token
@@ -1854,12 +1838,12 @@ KV-Cache来自于对上述矩阵计算过程的观察和分析，通过分析每
 4. **计算注意力机制结果**：注意力机制基于注意力权重进行value向量的加权和，因此和上一条的结论一样，历史token结果独立于新token。而新token需要历史token的value向量缓存
 <br><br>
 
-<span style="font-size: 1.5em; font-weight: bold;">基于KV-Cache的注意力计算过程</span>
+<h3>基于KV-Cache的注意力计算过程</h3>
 
 为了清晰展示计算过程，仅推导单头场景（推广至多头场景的原理和过程与之前的多头注意力实现是完全一致的）：
-1. 假设历史输入token为$S_1$，长度为N，则基于KV-Cache，将存储每个头的KV结果矩阵，单个头的形状为 [Nxhead_dim] = [Nx128]
-2. 假设新增输入token为$S_2$，长度为M（可以是新预测的token，也可以是用户新一轮对话的输入等各种场景）
-3. 计算新token的QKV向量：$Q,K,V = S_2W_{Q,K,V}$ => [Mx4096] x [4096x128] = [Mx128]
+1. 假设历史输入token为 $S_1$ ，长度为N，则基于KV-Cache，将存储每个头的KV结果矩阵，单个头的形状为 [Nxhead_dim] = [Nx128]
+2. 假设新增输入token为 $S_2$ ，长度为M（可以是新预测的token，也可以是用户新一轮对话的输入等各种场景）
+3. 计算新token的QKV向量： $Q,K,V = S_2W_{Q,K,V}$ => [Mx4096] x [4096x128] = [Mx128]
 4. 给QK向量加入位置信息：新token的位置要从N+1开始算起，不能从0计算，[Mx128] -> [Mx128]
 5. 将新的KV值加入到KV缓存中，得到更新后的KV矩阵，即 [Nx128] -> [(N + M)x128]
 6. 计算新token的注意力权重：Attention_weight = softmax(QK/sqrt(d) + mask) => [Mx128] x [128x(N + M)] = [Mx(N + M)]
