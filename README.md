@@ -741,7 +741,7 @@ The specific calculation process of RoPE is as follows:
 </h3>
 
 1. Divide the dimensions of each vector into pairs (because the derivation of high-dimensional rotation matrices is complex, and excessively high dimensions will significantly increase the computational complexity, while the formulas for two-dimensional rotation are relatively mature and simple, making them easy to calculate).
-2. For each pair, obtain $\Large \theta=\frac{1}{rope\_theta^{i/D}}$, where $i$ is the $i$-th pair and $D$ is the total number of pairs. That is, the positional information of the current dimension pair within the vector.
+2. For each pair, obtain $\Large \theta=\frac{1}{rope\\_theta^{i/D}}$, where $i$ is the $i$-th pair and $D$ is the total number of pairs. That is, the positional information of the current dimension pair within the vector.
 3. For each vector, obtain $\Large m$, which represents that the vector corresponds to the $m$-th token. That is, the positional information of the current vector within the entire input vectors.
 4. For each pair, $\large res=\begin{pmatrix} \cos m\theta & -\sin m\theta \\ \sin m\theta & \cos m\theta \\ \end{pmatrix} \begin{pmatrix} x^0_i \\ x^1_i \\ \end{pmatrix}$, where $res$ is the result of rotating the vector pair by $m\theta$ degrees in the complex space.
 5. Perform the above calculations on all dimension pairs of all vectors to obtain the final RoPE result.
@@ -896,7 +896,7 @@ Note: As shown in the figures, tokens in later positions have larger rotation an
 <h3>
 Now we have provided a complex number (an angle-changing vector) for each dimension pair of the query vector corresponding to each token.
 </h3>
-<br><br>
+<br>
 Now we can convert our query (the one divided into pairs) into complex numbers and then rotate these queries through dot-product calculation. :)
 
 
@@ -1243,7 +1243,6 @@ It's worth noting that in the <a href="https://github.com/meta-llama/llama3/blob
 2. After obtaining the QKV vectors, duplicate the internal parts of the K and V vectors to make their shapes consistent with the Q vector. At this time, the shapes of all of them are [32x17x128].
 3. When calculating the scores, use the transpose method to exchange the positions of the last two dimensions of the tensors to complete the matrix multiplication. For example, `torch.matmul(q, k.transpose(1,2)) / head_dim ** 0.5`. At this time, it is [32x17x128] x [32x128x17] = [32x17x17].
 4. The same principle applies to other matrix calculations.
-<br>
 
 Note: The matrix shape changes in each step of the above process are simplified versions, only for illustration to facilitate understanding, which are different from the change process in the official Llama3 implementation (the official implementation involves a large number of shape change processes). 
 
@@ -1420,29 +1419,25 @@ Nowadays, this kind of feed-forward network architecture is very common in large
 <br><br>
 
 <h3>Why Introduce Nonlinear Layers:</h3>
-<br>
 
 - The Nonlinearity is at the core of why neural network models can be considered "universal function approximators". In traditional neural network models, we use nonlinear activation functions (such as sigmoid, ReLU, etc.) to increase the model's expressive power, enabling it to fit the complex patterns hidden in the training data.
 - However, in the Transformer, the attention mechanism is essentially a linear weighted sum of the value vectors (even though the weights are obtained through nonlinear calculation of the softmax function, it's still just a linear weighting for the values). Therefore, although it can capture global dependencies, its output is still only a linear combination of the input. At this time, the Transformer model is actually lacks nonlinear capabilities.
 - So, it is necessary to add an FFN network after the self-attention layer to introduce nonlinear transformation capabilities to the model, thus improving the model's ability to model complex semantic relationships.
-<br>
 
 <h3>Generally, introducing nonlinear layers can play the following roles:</h3>
 
 1. Add nonlinear capabilities to the model to facilitate the model's learning and training.
 2. Enhance the model's information abstraction ability, enabling the model to represent data features and patterns at different levels during the layer-by-layer learning process. For example, the lower-layer networks can identify basic language structures (such as part-of-speech), while the higher-layer networks can understand more complex semantic information (such as sentiment, intention).
 3. In addition, a current view holds that the attention layer is mainly used for input context interaction, while the FFN layer is where the LLMs mainly stores and remembers general knowledge during training (given to its nonlinear representation ability), so that it can find answers to input questions from general knowledge.
-<br><br>
 
 <h3>SwiGLU Network Structure:</h3>
 
 1. Perform a linear transformation on the input: $X^\prime = XW_3$
-2. Gating unit: $GATE = Activation\_Function(XW_1)$, which is used to selectively pass information. That is, assuming that the information in $X^\prime$ has different importance, so the information should be weighted and passed based on the score of the gating unit, thus improving the expressive ability of the model.
+2. Gating unit: $GATE = Activation\\_Function(XW_1)$, which is used to selectively pass information. That is, assuming that the information in $X^\prime$ has different importance, so the information should be weighted and passed based on the score of the gating unit, thus improving the expressive ability of the model.
 3. The activation function used is a Swish activation function (hence the network is called SwiGLU, which is a combination of the Swish activation function and the Gated Linear Unit (GLU)). The formula is: $Swish = X \cdot \sigma(\beta X)$, where $\sigma$ is the sigmoid activation function. In SwiGLU, $\beta$ is set to 1 (in the original formula, it is a learnable parameter).
 4. Therefore, the specific calculation of the gating unit is: $GATE = XW_1 \cdot \sigma(XW_1)$. In PyTorch, this activation function is called silu, that is $GATE = silu(XW_1)$.
 5. Application of the gating mechanism: $X^\prime = X^\prime \cdot GATE$
 6. Perform a linear transformation again: $Y = X^\prime W_2$
-<br><br>
 
 <h3>Calculation of the Dimension Size of the Hidden Layer in the Feed-Forward Layer (Based on the Official Implementation Process of Llama3):</h3>
 
@@ -1839,6 +1834,7 @@ KV-Cache comes from the observation and analysis of the above matrix calculation
 <br>
 
 <h3>Here is the specific derivation logic of KV-Cache:</h3>
+
 1. **Premise**: To predict the next token, we only need to get the output result of the last token (just as we did in the prediction chapter).
 2. **Non-attention parts only needs to calculate the new tokens**: Except for the attention calculation, the calculations of all other parts are independent among tokens. So we only need to calculate the new tokens and don't need to input historical tokens (I'll expand the analysis below).
 3. **Attention parts also only needs to calculate the new tokens**: In the attention layer, due to the masking mechanism, the output results of historical tokens won't be affected by future new tokens. So their inputs and outputs at each layer are fixed, that is, the QKV vectors of historical tokens will not change because of the addition of new tokens. Thus, we only need to calculate the attention of the new tokens.
