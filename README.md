@@ -743,7 +743,7 @@ The specific calculation process of RoPE is as follows:
 1. Divide the dimensions of each vector into pairs (because the derivation of high-dimensional rotation matrices is complex, and excessively high dimensions will significantly increase the computational complexity, while the formulas for two-dimensional rotation are relatively mature and simple, making them easy to calculate).
 2. For each pair, obtain $\Large \theta=\frac{1}{rope\\_theta^{i/D}}$, where $i$ is the $i$-th pair and $D$ is the total number of pairs. That is, the positional information of the current dimension pair within the vector.
 3. For each vector, obtain $\Large m$, which represents that the vector corresponds to the $m$-th token. That is, the positional information of the current vector within the entire input vectors.
-4. For each pair, $\large res=\begin{pmatrix} \cos m\theta & -\sin m\theta \\ \sin m\theta & \cos m\theta \\ \end{pmatrix} \begin{pmatrix} x^0_i \\ x^1_i \\ \end{pmatrix}$, where $res$ is the result of rotating the vector pair by $m\theta$ degrees in the complex space.
+4. For each pair, ![png](images/pmatrix.png) , where $res$ is the result of rotating the vector pair by $m\theta$ degrees in the complex space.
 5. Perform the above calculations on all dimension pairs of all vectors to obtain the final RoPE result.
 
 <div>
@@ -1842,7 +1842,6 @@ KV-Cache comes from the observation and analysis of the above matrix calculation
 5. **Calculate the new token's attention weights**: As known from point 4, we also need to obtain the importance information, i.e., weights, between the new tokens and historical tokens first. So we need to calculate the product of the key vectors of the new tokens with the key vectors of all tokens. Therefore, we need to store the keys of historical tokens.
 6. **Acquisition of KV-Cache**: As known from points 4 and 5, we need to store the KV vectors of historical tokens. Since the query vectors are not used, we don't need to store them. This is how the kv-cache came about.
 7. **Efficiency of KV-Cache**: As known from point 3, the historical KV vectors won't change. So they can be incrementally updated during the continuous prediction process without modifying the historical content. In this way, each time we predict, we only need to input and calculate the result of the newly added tokens instead of taking the complete sequence as input, thus greatly improving the inference efficiency.
-<br><br>
 
 <h3>Additional: Analysis of the Independence of Token Calculation in KV-Cache</h3>
 

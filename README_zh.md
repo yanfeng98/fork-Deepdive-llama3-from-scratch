@@ -737,7 +737,7 @@ RoPE通常应用于自注意力机制中的query和key向量。在计算注意�
 1. 将每个向量的维度两两分割，作为一对（因为高维旋转矩阵推导复杂，且过高的维度会显著增加计算复杂度，而二维旋转的公式比较成熟且简单，易于计算）
 2. 对于每一对，得到 $\Large \theta=\frac{1}{rope\\_theta^{i/D}}$ ，其中i为第i对，D为总的对数。即当前维度对在该向量内的位置信息
 3. 对于每个向量，得到 $\Large m$ ，表示该向量对应的是第m个token。即当前向量在整个向量列表内的位置信息
-4. 对于每一对， $\large res=\begin{pmatrix} \cos m\theta & -\sin m\theta \\ \sin m\theta & \cos m\theta \\ \end{pmatrix} \begin{pmatrix} x^0_i \\ x^1_i \\ \end{pmatrix}$ ，其中res即该向量对在复空间中旋转 $m\theta$ 度后的结果
+4. 对于每一对， ![png](images/pmatrix.png) ，其中res即该向量对在复空间中旋转 $m\theta$ 度后的结果
 5. 对所有向量的所有维度对做上述计算，即可得到最终的RoPE位置嵌入结果
 
 <div>
