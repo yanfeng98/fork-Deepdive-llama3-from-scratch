@@ -105,8 +105,10 @@ Now, let's start the formal learning process!
 In this file, I implemented Llama3 from scratch, one tensor and matrix multiplication at a time.
 <br>
 Also, I'm going to load tensors directly from the model file that meta provided for Llama3 (Meta-Llama-3-8B), you need to download the weights before running this file. Here is the offical link to download the weights: https://llama.meta.com/llama-downloads/
+<br><br>
+Note 1: This project has adopted the model file download method based on Huggingface. You will see it in the loading model section below. Similarly, you can also download the models directly from the official website or ModelScope and other model download sources without running the model download code below.
 <br>
-Note: This project uses the original model files, that is, the models in the "original" folder of the downloaded model files.
+Note 2: This project uses the original model files, that is, the models in the "original" folder of the downloaded model files.
 <br><br>
 
 <h3>
