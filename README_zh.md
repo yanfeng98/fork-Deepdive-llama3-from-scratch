@@ -1,46 +1,10 @@
-<p align="center">
-    <img src="images/logo.png" width="600px"/>
-</p>
-
 <h1 align="center">深入挖掘llama3的从零实现</h1>
-
-<p align="center">
-    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/LICENSE"><img src="https://img.shields.io/github/license/therealoliver/Deepdive-llama3-from-scratch" alt="License"></a>
-    <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/stargazers"><img src="https://img.shields.io/github/stars/therealoliver/Deepdive-llama3-from-scratch" alt="GitHub stars"></a>
-    <a href="#from_me"><img src="https://img.shields.io/badge/☕%20Buy%20me%20a%20coffee-ff69b4" alt="Buy me a coffee"></a>
-</p>
 
 <h3 align="center">
     <p>
-        <b>[ <a href="https://github.com/therealoliver/Deepdive-llama3-from-scratch/blob/main/README.md">View in English</a> | 中文版文档点这里 ]</b>
+        <b>[ <a href="./README.md">View in English</a> | 中文版文档点这里 ]</b>
     </p>
 </h3>
-
----
-
-本项目是基于 [naklecha/llama3-from-scratch](https://github.com/naklecha/llama3-from-scratch) 的增强版本。在原项目的基础上进行了全面的改进和优化，旨在帮助大家更轻松地理解和掌握llama3模型的实现原理以及详细的推理流程，感谢原作者的贡献 :)
-<br><br>
-<h3>以下是本项目的核心改进点：</h3>
-
-
-1. **结构优化**  
-   重新编排了内容顺序，调整了目录结构，使学习过程更加清晰合理，便于大家循序渐进地理解代码。
-   
-2. **代码注释**  
-   添加了大量详细的代码注释，手把手教你理解每一段代码的作用，即使是初学者也能轻松上手。
-   
-3. **维度追踪**  
-   完整注解了每一步计算中矩阵维度的变化，让你更容易的理解整个流程。
-   
-4. **原理说明**  
-   补充了丰富的原理类说明，大量的细节推导，不仅告诉你“要怎么做”，还深入解释了“为什么要这么做”，帮助你从根本上掌握模型的设计思想。
-   
-5. **KV-Cache**  
-   额外增加了KV-Cache的推导章节，涵盖详细的核心思想、原理推导以及在注意力机制中的应用流程等内容，让你从根源了解KV-Cache的每个细节及思考。
-   
-6. **双语文档**  
-   提供了中英双语的代码文件，原生的中文翻译避免机翻的词不达意。
-<br><br>   
 
 ---
 
